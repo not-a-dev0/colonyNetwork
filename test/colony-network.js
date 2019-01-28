@@ -293,8 +293,8 @@ contract("Colony Network", accounts => {
       assert.equal(lookedUpENSDomain, "test.user.joincolony.eth");
 
       // Get stored orbitdb address
-      const retrievedOrbitDB = await colonyNetwork.getProfileDBAddress(hash);
-      assert.equal(retrievedOrbitDB, orbitDBAddress);
+      const record = await colonyNetwork.lookupRegisteredENSRecord(hash);
+      assert.equal(record.orbitdb, orbitDBAddress);
 
       // Label already in use
       await checkErrorRevert(colonyNetwork.registerUserLabel(username, orbitDBAddress, { from: accounts[2] }), "colony-label-already-owned");
@@ -333,8 +333,8 @@ contract("Colony Network", accounts => {
       const lookedUpENSDomain = await colonyNetwork.lookupRegisteredENSDomain(colony.address);
       assert.equal(lookedUpENSDomain, "test.colony.joincolony.eth");
       // Get stored orbitdb address
-      const retrievedOrbitDB = await colonyNetwork.getProfileDBAddress(hash);
-      assert.equal(retrievedOrbitDB, orbitDBAddress);
+      const record = await colonyNetwork.lookupRegisteredENSRecord(hash);
+      assert.equal(record.orbitdb, orbitDBAddress);
 
       // Can't register two labels for a colony
       await checkErrorRevert(colony.registerColonyLabel(colonyName2, orbitDBAddress, { from: accounts[0] }), "colony-already-labeled");
